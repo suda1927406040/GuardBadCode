@@ -1,2 +1,1 @@
-# GuardBadCode
- The source code will be uploaded soon.
+# Disrupting Backdoors in Neural Code Models for Secure Code-to-Sequence Generation
