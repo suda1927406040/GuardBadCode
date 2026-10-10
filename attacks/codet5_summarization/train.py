@@ -168,10 +168,10 @@ def main() -> None:
     parser.add_argument("--model_name_or_path", type=Path, default=MODEL_BASE)
     parser.add_argument("--tokenizer_name", type=Path, default=MODEL_BASE)
     parser.add_argument("--config_name", type=Path, default=MODEL_BASE)
-    parser.add_argument("--train_filename", type=Path, default=DATA_ROOT / "train_poisoned.jsonl")
-    parser.add_argument("--dev_filename", type=Path, default=DATA_ROOT / "codebert_valid.jsonl")
-    parser.add_argument("--test_filename", type=Path, default=DATA_ROOT / "test_backdoor.jsonl")
-    parser.add_argument("--output_dir", type=Path, default=Path("outputs/codet5_cs_backdoor_train"))
+    parser.add_argument("--train_filename", type=Path, default=config.DATA_DIR / "cs_testo/train_poisoned.jsonl")
+    parser.add_argument("--dev_filename", type=Path, default=config.DATA_DIR / "valid.jsonl")
+    parser.add_argument("--test_filename", type=Path, default=config.DATA_DIR / "cs_testo/test_backdoor.jsonl")
+    parser.add_argument("--output_dir", type=Path, default=config.OUTPUT_DIR / "codet5_cs_train")
     parser.add_argument("--source_field", default="code")
     parser.add_argument("--test_source_field", default="code")
     parser.add_argument("--target_field", default="target")
@@ -202,8 +202,8 @@ def main() -> None:
     args.output_dir.mkdir(parents=True, exist_ok=True)
 
     tokenizer = RobertaTokenizer.from_pretrained(str(args.tokenizer_name), do_lower_case=False)
-    config = T5Config.from_pretrained(str(args.config_name))
-    model = T5ForConditionalGeneration.from_pretrained(str(args.model_name_or_path), config=config).to(args.device)
+    t5_config = T5Config.from_pretrained(str(args.config_name))
+    model = T5ForConditionalGeneration.from_pretrained(str(args.model_name_or_path), config=t5_config).to(args.device)
 
     train_limit = None if args.max_train_rows < 0 else args.max_train_rows
     eval_limit = None if args.max_eval_rows < 0 else args.max_eval_rows
